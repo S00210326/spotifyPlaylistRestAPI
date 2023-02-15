@@ -1,0 +1,120 @@
+### sign up/ add to user database
+POST http://localhost:3000/users HTTP/1.1
+content-type: application/json
+
+{ "username": "use4",
+"email" : "newUser@here.ie",
+"password" : "password1",
+"roles":["admin","edit"]}
+
+### login
+
+POST http://localhost:3000/auth/local HTTP/1.1
+content-type: application/json
+
+{ "username": "paulsmain",
+"password" : "password1"}
+
+###
+
+###
+##POST with correct data should return 201
+POST http://localhost:3000/songs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicGF1bHNtYWluIiwiaWF0IjoxNjY3NDAwNzEzLCJleHAiOjE2Njc0MDEwMTN9.kgKP8vVnsNp98frCbnjR5RidNejN1Dm7sZ7VU2_R2h4
+
+{ "title": "Unwritten",
+    "year_written": 2000,
+    "sales":1000000,
+    "artist": {
+      "name":"Allanis Morrisette",
+      "nationality":"american",
+      "age":30
+    }
+}
+
+### 
+###POST which fails validation
+POST http://localhost:3000/songs HTTP/1.1
+content-type: application/json
+
+{"title": 45,
+"year_written":1970,
+"sales":55500000,
+"artist":{
+  "name": "Dire Straits baby"
+  ,"nationality":"English"
+  ,"age":50
+  
+}
+
+
+}
+
+
+
+### 
+###Get on a set of resources
+GET http://localhost:3000/songs HTTP/1.1
+
+###Get on a set of resources
+GET http://localhost:3000/songs/6353fa7cab23722df71bc1f1 HTTP/1.1
+
+###
+###Get which fails
+GET http://localhost:3000/songs/63fa7cab23722df71bc1f1 HTTP/1.1
+
+
+###
+DELETE  http://localhost:3000/songs/6356c2282b950221af90a0f7 HTTP/1.1
+###
+## Delete should fail with 404 as is on the collection not an individual
+DELETE http://localhost:3000/songs/ HTTP/1.1
+
+###
+### PUT THAT SUCCEEDS
+
+PUT http://localhost:3000/songs/6353fdc79b29ffc2ca524b6a HTTP/1.1
+content-type: application/json
+
+ {
+    
+    "title": "Newest song in album",
+    "year_written": 3000,
+    "artist": {
+      "name":"Paul mc gonigle"
+    }
+     
+     
+}
+### PUT THAT SUCCEEDS
+
+PUT http://localhost:3000/songs/123 HTTP/1.1
+content-type: application/json
+
+ {
+    
+    "title": "Newest song in album",
+    "year_written": 3000,
+    "artist": {
+      "name":"Paul mc gonigle"
+    }
+     
+     
+}
+
+### PUT THAT FAILS AS DATA NOT VALID
+
+PUT http://localhost:3000/songs/6353fdc79b29ffc2ca524b6a HTTP/1.1
+content-type: application/json
+
+ {
+    
+    "title": 123,
+    "year_written": 3000,
+    "artist": {
+      "name":"Paul mc gonigle"
+    }
+     
+     
+}

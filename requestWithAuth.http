@@ -1,0 +1,70 @@
+
+
+### login
+# @name loginUsingAuthLocal
+POST http://localhost:3000/auth/local HTTP/1.1
+content-type: application/json
+
+{ "username": "use4",
+"password" : "password1"}
+
+
+### @name loginusingAuth0
+POST https://dev-vpz6bi6373xqg51z.us.auth0.com/oauth/token
+content-type: application/json
+
+{"client_id":"YJ68yKwJUmBaomMtKf2LR4IBn2tqD6Ki",
+"client_secret":"cAQ93YVthE5eMawjENBeLVy_rmRSId03I0PIctXZhJsMZ06QyGT-kitucOo5hzqo",
+"audience":"songs","grant_type":"client_credentials"}
+
+###
+GET http://localhost:3000/songs
+Authorization: Bearer {{loginusingAuth0.response.body.access_token}}
+
+
+###
+### POST Request for a book with just a title
+## expeted result 201 Created with the id of the book in location and a book returned.
+# POST http://localhost:3000/songs HTTP/1.1
+# content-type: application/json
+# Authorization: Bearer {{loginUsingAuthLocal.response.body.accesstoken}}
+
+# { "title" : "a new book from an authenciated"}
+
+###
+### POST Request for a book with just a title
+## expeted result 201 Created with the id of the book in location and a book returned.
+POST http://localhost:3000/songs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlNCIsImlhdCI6MTY2Njc5NzIwNSwiZXhwIjoxNjY2Nzk3NTA1fQ.Si0VErt2ALNPNOZp95-oWq39eq2SKsDtZALdjj-osiU
+
+{ "title" : "a really new book"}
+
+
+###
+### POST Request for a book with no title -
+## 400 with some JOI details inculding the title is required
+POST http://localhost:3000/songs HTTP/1.1
+content-type: application/json
+
+
+
+{ "year_written": 2022}
+
+###
+### POST Request for a book with a title - but a string for a year - this should fail
+## 400 with a message about year_written not being a number
+POST http://localhost:3000/songs HTTP/1.1
+content-type: application/json
+
+{ "year_written": "this year",
+"title" : "The BEST"}
+
+###
+# comment goes here - will fail with 404 as on collection
+
+PUT http://localhost:3000/songs/63340cde5def8f9f17677bd8 HTTP/1.1
+content-type: application/json
+
+{ "year_written": 2036,
+"title" : "2035"}
